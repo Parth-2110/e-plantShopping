@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import './ProductList.css'
 import CartItem from './CartItem';
+import { useDispatch } from 'react-redux';
+import { addItem } from './CartSlice';
 function ProductList({ onHomeClick }) {
     const [showCart, setShowCart] = useState(false);
     const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
-
+    const dispatch = useDispatch();
+    const [addedToCart, setAddedToCart] = useState({});
     const plantsArray = [
         {
             category: "Air Purifying Plants",
@@ -248,6 +251,13 @@ function ProductList({ onHomeClick }) {
         setShowCart(false); // Hide the cart when navigating to About Us
     };
 
+    const handleAddToCart = (plant) => {
+        dispatch(addItem(plant));
+        setAddedToCart((prevState) => ({
+            ...prevState,
+            [plant.name]: true
+        }));
+    };
     const handleContinueShopping = (e) => {
         e.preventDefault();
         setShowCart(false);
